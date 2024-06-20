@@ -61,7 +61,7 @@ const postById = async (req, res) => {
     
     const result = await scriviUtentiSulFile(data);
     if (result) {
-      console.log('result : '+ result)
+      console.log('res ult : '+ result)
       const result2 = await scriviSingoloUtenteSuFile(utente);
       if (result2) {
         console.log('result2 : '+ result2)
