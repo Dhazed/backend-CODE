@@ -1,100 +1,66 @@
-const fs = require('fs').promises;
+const { Book } = require('../../models/index');
 
-//FUNZIONI INTERNE, NON COLLEGATE A NESSUN ENDPOINT API
-const leggiBookDalFile =  () => {
-  return fs.readFile('database/books.json',"utf8")
-    .then((resp)=>{
-      const data = JSON.parse(resp)
-      return data; 
-    }).catch((err)=>{
-      return err;
-    });
-   
- 
-};
-const scriviBookSulFile = async (data) => {
+async function getBooks(req, res) {
   try {
-    await fs.writeFile('database/books'+'.json', JSON.stringify(data, null, 2), "utf8");
-    return true;
+    const books = await Book.findAll();
+    res.status(200).json(books);
   } catch (error) {
-    console.error('Errore scrittura su file!!!!!!!!!!!', error)
-    return false;
+    console.log(error);
+    res.status(500).send({ message: 'Errore nel recuperare i libri dal database' });
   }
-};
+}
 
-
-//FUNZIONI API 
-const findAll = async (req, res) => {
-  const data = await leggiBookDalFile();
-  res.status(200).json(data);
-};
-
-const findById = async (req, res) => {
-  const idBook = req.params.id;
-  const data = await leggiBookDalFile();
-  const Book = data.books.find(user => user.id === parseInt(idBook, 10));
-  if (Book) {
-    res.status(200).json(Book);
-  } else {
-    res.status(404).send('404 - not found');
-  }
-};
-
-const postById = async (req, res) => {
+async function getBookById(req, res) {
   try {
-    const data = await leggiBookDalFile();
-    const nuovoBookId = data.books.length + 1;
-    
-    const Book = req.body;
-    Book.id = nuovoBookId;
-    
-    data.books.push(Book);
-    const result = await scriviBookSulFile(data);
-    if (result) {
-      res.status(201).send({message: 'Book inserito correttamente'});
+    const bookId = req.params.id;
+    const book = await Book.findByPk(bookId);
+    if (!book) {
+      return res.status(404).send({ message: 'Libro non trovato' });
     }
-    else {
-      res.status(500).send({message: 'Errore inserimento Book'});
-    }
-   
+    res.status(200).json(book);
   } catch (error) {
-    console.log(error)
-    res.status(500).send({message: 'Errore: ' + error});
+    console.log(error);
+    res.status(500).send({ message: 'Errore nel recuperare il libro dal database' });
   }
-};
+}
 
-const updateById = async (req, res) => {
-  const data = await leggiBookDalFile();
-  const indiceBookTrovato = data.books.findIndex(user => user.id === parseInt(id, 10));
-  if (indiceBookTrovato >= 0) {
-      data.books[indiceBookTrovato] = req.body;
-      await scriviBookSulFile(data);
-      res.status(200).send({message: 'Book aggiornato correttamente!'});
-  } else {
-    res.status(404).send('404 - not found');
+async function createBook(req, res) {
+  try {
+    const { titolo, autore } = req.body;
+    const newBook = await Book.create({ titolo, autore });
+    res.status(201).json(newBook);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ message: 'Errore durante la creazione del libro nel database' });
   }
-};
+}
 
-const deleteById = async (req, res) => {
-  const idBook = req.params.id;
-  const data = await leggiBookDalFile();
-  const indiceBookTrovato = data.books.findIndex(user => user.id === parseInt(idBook, 10));
-  if (indiceBookTrovato !== -1) {
-    data.books.splice(indiceBookTrovato, 1);
-    await scriviBookSulFile(data);
-    res.status(200).send({message: 'Book cancellato correttamente'});
-  } else {
-    res.status(404).send('404 - not found');
+async function updateBookById(req, res) {
+  try {
+    const bookId = req.params.id;
+    const updatedBook = await Book.update(req.body, { where: { id: bookId } });
+    res.status(200).json(updatedBook);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ message: 'Errore nell\'aggiornare il libro nel database' });
   }
-};
+}
 
+async function deleteBookById(req, res) {
+  try {
+    const bookId = req.params.id;
+    await Book.destroy({ where: { id: bookId } });
+    res.status(200).send({ message: 'Libro cancellato correttamente' });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ message: 'Errore nella cancellazione del libro nel database' });
+  }
+}
 
 module.exports = {
-  bookController: {
-    findAll,
-    findById,
-    postById,
-    updateById,
-    deleteById,
-  }
+  getBooks,
+  getBookById,
+  createBook,
+  updateBookById,
+  deleteBookById,
 };
