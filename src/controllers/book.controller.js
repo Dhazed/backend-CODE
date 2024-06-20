@@ -69,9 +69,9 @@ const updateById = async (req, res) => {
   if (indiceBookTrovato >= 0) {
       data.books[indiceBookTrovato] = req.body;
       await scriviBookSulFile(data);
-      res.status(200).send({message: 'Book aggiornato correttamente!'});
+      res.status(200).send({message: 'Book aggiornato correttamente'});
   } else {
-    res.status(404).send('404 - not found');
+    res.status(404).send('404 not found');
   }
 };
 
@@ -84,7 +84,7 @@ const deleteById = async (req, res) => {
     await scriviBookSulFile(data);
     res.status(200).send({message: 'Book cancellato correttamente'});
   } else {
-    res.status(404).send('404 - not found');
+    res.status(404).send('404 not found');
   }
 };
 
