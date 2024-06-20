@@ -12,7 +12,13 @@ const { sequelize } = require('../models/index');
 
 if (cluster.isMaster) {
   console.log('Master' + process.pid+ ' is running');
-  
+  // Sincronizzazione delle tabelle
+sequelize.sync().then(() => {
+  console.log('Database e tabelle create');
+}).catch(err => {
+  console.error('Errore nella sincronizzazione del database:', err);
+});
+
   for(let i = 0; i < numCPUs; i++) {
     cluster.fork()
   }
@@ -33,12 +39,6 @@ app.use('/api/auth', authRoutes);
 app.use('/api/user', userRouter);
 app.use('/api/book', bookRouter);
 
-// Sincronizzazione delle tabelle
-sequelize.sync().then(() => {
-  console.log('Database e tabelle create');
-}).catch(err => {
-  console.error('Errore nella sincronizzazione del database:', err);
-});
 
 app.get('/', (req, res) => {
   res.send({ message: 'API di root ( / ) non implementata!' });
