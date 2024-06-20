@@ -1,13 +1,12 @@
-const router = require('express').Router();
+const express = require('express');
+const router = express.Router();
+const bookController = require('../controllers/book.controller');
+const { verifyToken } = require('../controllers/auth');
 
-const { bookController } = require('../controllers/book.controller');
-router.get('/', bookController.findAll);
-router.get('/:id', bookController.findById);
-
-router.post('/', bookController.postById);
-
-router.put('/:id', bookController.updateById);
-
-router.delete('/:id', bookController.deleteById);
+router.get('/', verifyToken, bookController.getBooks);
+router.get('/:id', verifyToken, bookController.getBookById);
+router.post('/', verifyToken, bookController.createBook);
+router.put('/:id', verifyToken, bookController.updateBookById);
+router.delete('/:id', verifyToken, bookController.deleteBookById);
 
 module.exports = router;
