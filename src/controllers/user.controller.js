@@ -103,8 +103,14 @@ const deleteById = async (req, res) => {
     res.status(404).send('404 - not found');
   }
 };
-
-
+ function userController = ( req, res {  
+  findAll, //PROVA 1
+  findById,
+  postById,
+  updateById,
+  deleteById,
+})
+ 
 module.exports = {
   userController: {
     findAll,
