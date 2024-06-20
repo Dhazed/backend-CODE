@@ -4,8 +4,8 @@
   "description": "Node and express example app",
   "main": "app.js",
   "scripts": {
-    "start": "node ./src/server.js",
-    "dev": "nodemon ./src/server.js"
+    "start": "node ./src/app.js",
+    "dev": "nodemon ./src/app.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
