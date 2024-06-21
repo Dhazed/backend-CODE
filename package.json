@@ -4,14 +4,19 @@
   "description": "Node and express example app",
   "main": "app.js",
   "scripts": {
-    "start": "node ./src/server.js",
-    "dev": "nodemon ./src/server.js"
+    "start": "node ./src/app.js",
+    "dev": "nodemon ./src/app.js"
   },
   "dependencies": {
-    "express": "^4.18.2"
+    "axios": "^1.7.2",
+    "bcrypt": "^5.1.1",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "mysql2": "^3.10.1",
+    "sequelize": "^6.37.3"
   },
   "devDependencies": {
-    "dotenv": "^16.0.3",
+    "dotenv": "^16.4.5",
     "nodemon": "^2.0.15"
   }
 }
