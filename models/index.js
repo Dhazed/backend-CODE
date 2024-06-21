@@ -19,7 +19,7 @@ const db = {
 };
 
 
-sequelize.sync({ alter: true, force: false }) 
+sequelize.sync() 
   .then(() => {
     console.log('Database & tables created!');
   })
