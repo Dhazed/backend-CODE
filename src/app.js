@@ -16,7 +16,7 @@ if (cluster.isMaster) {
   // Sincronizzazione delle tabelle
   sequelize.sync()
     .then(() => {
-      console.log('Database e tabelle create');
+      console.log('Database e tabelle sincronizzate');
     })
     .catch(err => {
       console.error('Errore nella sincronizzazione del database:', err);

@@ -19,12 +19,5 @@ const db = {
 };
 
 
-sequelize.sync() 
-  .then(() => {
-    console.log('Database & tables created!');
-  })
-  .catch(err => {
-    console.error('Unable to sync database:', err);
-  });
 
 module.exports = db;
