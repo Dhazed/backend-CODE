@@ -47,7 +47,7 @@ if (cluster.isMaster) {
   app.use('/api/book', bookRouter);
 
   app.get('/', (req, res) => {
-    res.send({ message: 'API di root ( / ) non implementata!' });
+    res.send({ message: `API di root ( / ) non implementata! by ${process.pid}`});
   });
 
   const port = process.env.SERVER_PORT || 3000;
