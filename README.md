@@ -13,3 +13,9 @@ To start, run
 To start in dev environment, run 
 
 `npm run dev`
+
+GitHub
+git checkout main
+git pull
+git checkout "MY BRANCH"
+git merge main

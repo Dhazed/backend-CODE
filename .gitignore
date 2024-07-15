@@ -131,3 +131,7 @@ dist
 
 package-lock.json
 database
+
+#cancello ds store
+.DS_Store
+src/.DS_Store
